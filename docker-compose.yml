@@ -1,0 +1,80 @@
+version: '2'
+
+services:
+    app:
+        image: tonysm/slackish-laravel-app
+        build:
+            dockerfile: ./resources/docker/app/Dockerfile
+            context: .
+        environment:
+            VIRTUAL_HOST: "slackish.com"
+            APP_ENV: local
+            CONTAINER_ROLE: app
+            CACHE_DRIVER: redis
+            SESSION_DRIVER: redis
+            QUEUE_DRIVER: redis
+            REDIS_HOST: redis
+        volumes:
+            - .:/var/www/html
+        ports:
+            - "80:80"
+        networks:
+            - front
+            - back
+    websockets:
+        image: tonysm/slackish-laravel-app
+        environment:
+            APP_ENV: local
+            CONTAINER_ROLE: websockets
+            CACHE_DRIVER: redis
+            SESSION_DRIVER: redis
+            QUEUE_DRIVER: redis
+            REDIS_HOST: redis
+        volumes:
+            - .:/var/www/html
+        ports:
+            - "6001:6001"
+        networks:
+            - back
+        depends_on:
+            - app
+    worker:
+        image: tonysm/slackish-laravel-app
+        environment:
+            APP_ENV: local
+            CONTAINER_ROLE: queue
+            CACHE_DRIVER: redis
+            SESSION_DRIVER: redis
+            QUEUE_DRIVER: redis
+            REDIS_HOST: redis
+        volumes:
+            - .:/var/www/html
+        networks:
+            - back
+        depends_on:
+            - app
+            - redis
+    db:
+        image: mysql:5.7
+        volumes:
+            - mysqldata:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: "secret"
+            MYSQL_DATABASE: "homestead"
+            MYSQL_USER: "homestead"
+            MYSQL_PASSWORD: "secret"
+        networks:
+            - back
+    redis:
+        image: redis:latest
+        networks:
+            - back
+networks:
+    back:
+        driver: "bridge"
+    front:
+        driver: "bridge"
+
+volumes:
+    mysqldata:
+        driver: "local"
