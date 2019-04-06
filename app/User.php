@@ -56,18 +56,26 @@ class User extends Authenticatable
      */
     public function createCompany(string $companyName)
     {
-        $company = $this->currentCompany()->create([
-            'name' => $companyName,
-            'owner_id' => $this->id
-        ]);
+        $company = \App\Company::where('name', '=', $companyName)->first();
 
-        $channel = $company->channels()->create([
-            'name' => 'general',
-        ]);
+        if ( $company !== null ) {
 
-        $company->update([
-            'default_channel_id' => $channel->id,
-        ]);
+            $channel  = $company->defaultChannel()->first();
+
+        } else {
+            $company = $this->currentCompany()->create([
+               'name' => $companyName,
+               'owner_id' => $this->id
+            ]);
+
+            $channel = $company->channels()->create([
+                'name' => 'general',
+            ]);
+
+            $company->update([
+                'default_channel_id' => $channel->id,
+            ]);
+        }
 
         $this->currentCompany()->associate($company);
         $this->currentChannel()->associate($channel);

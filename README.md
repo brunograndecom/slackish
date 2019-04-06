@@ -34,4 +34,4 @@ If you want to run it locally, here is the setup:
 - Create a Pusher Account and configure the credentials in the `.env` file
 - You need to generate [OAuth Application](https://console.developers.google.com/apis/dashboard) and enable the Google Plus contact permission
 - After that, configure your `.env` to use those credentials, the redirect URL I use is `http://localhost:8000/auth/google/callback`
-- Run the application! (use `php artisan serve`)
+- Run the application! (use `php artisan serve` and `php artisan websockets:serve`)

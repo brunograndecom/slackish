@@ -23,7 +23,7 @@
 
                         <div class="w-full px-3">
                             <button type="submit" class="py-4 px-6 border border-purple-lightest bg-white rounded text-purple-light">
-                                Create
+                                Create / Join
                             </button>
                         </div>
                     </div>
