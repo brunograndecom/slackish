@@ -1,4 +1,4 @@
-import {getChannels, sendMessage, createChannel, logout} from '../api/Chat';
+import {getChannels, getMessages, sendMessage, createChannel, logout} from '../api/Chat';
 import {
     SET_CHANNELS
 } from './mutations';
@@ -11,6 +11,10 @@ export const LOGOUT = 'user/LOGOUT';
 export default {
     [SEND_NEW_MESSAGE]({state}, message) {
         sendMessage(state.currentChannel, message);
+        getMessages(state.currentChannel)
+            .then((messages) => {
+                state.messages = messages;
+            });
     },
     [LIST_CHANNELS]({commit}) {
         getChannels()

@@ -18,5 +18,5 @@ Route::middleware('auth:api')->group(function (Router $router) {
     $router->get('/user', 'Api/UserController@index');
 
     $router->resource('channels', 'ChannelsController', ['only' => ['store', 'index']]);
-    $router->resource('channels.messages', 'ChannelMessagesController', ['only' => ['store']]);
+    $router->resource('channels.messages', 'ChannelMessagesController', ['only' => ['store', 'index']]);
 });

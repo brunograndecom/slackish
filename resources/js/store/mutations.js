@@ -1,3 +1,5 @@
+import {getMessages} from '../api/Chat';
+
 export const SET_CHANNELS = 'channels/set_channels';
 export const NEW_CHANNEL = 'channels/new_channel';
 export const JOINED_CHANNEL = 'channels/joined_channel';
@@ -12,14 +14,19 @@ export default {
         state.channels = channels;
     },
     [NEW_CHANNEL] (state, {channel}) {
+        channel.messages = [];
         state.channels.push(channel);
     },
     [JOINED_CHANNEL] (state, {channel}) {
         state.currentChannel = channel;
-        state.messages = [];
+        getMessages(state.currentChannel)
+            .then((messages) => {
+                state.messages = messages;
+            });
     },
     [NEW_MESSAGE] (state, {message}) {
-        state.messages.push(message);
+        state.currentChannel.messages.push(message);
+        state.messages = state.currentChannel.messages;
     },
     [LOAD_USER] (state, {user, company}) {
         state.user = user;

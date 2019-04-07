@@ -39,6 +39,6 @@ class Company extends Model
     public function createChannel(string $name)
     {
         return $this->channels()
-            ->create(['name' => $name]);
+            ->create(['name' => $name, 'messages' => []]);
     }
 }

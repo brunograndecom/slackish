@@ -7,6 +7,13 @@ export function getChannels() {
         ));
 }
 
+export function getMessages(channel) {
+    return axios(`/api/channels/${channel.id}/messages`)
+        .then(({data}) => (
+            data.data.map((messages) => messages)
+        ));
+}
+
 export function sendMessage(channel, message) {
     return axios.post(`/api/channels/${channel.id}/messages`, {
         content: message,

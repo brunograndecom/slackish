@@ -12,6 +12,7 @@ class Channel extends Model
     protected $fillable = [
         'name',
         'company_id',
+        'messages',
     ];
 
     /**
@@ -20,6 +21,11 @@ class Channel extends Model
     protected $visible = [
         'id',
         'name',
+        'messages',
+    ];
+
+    protected $casts = [
+        'messages' => 'array',
     ];
 
     /**
