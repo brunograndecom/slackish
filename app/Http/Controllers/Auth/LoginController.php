@@ -32,7 +32,7 @@ class LoginController extends Controller
      */
     public function create($provider)
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)->stateless()->redirect();
     }
 
     /**
@@ -43,7 +43,7 @@ class LoginController extends Controller
     public function store($provider)
     {
         /** @var \Laravel\Socialite\AbstractUser $providerUser */
-        $providerUser = Socialite::driver($provider)->user();
+        $providerUser = Socialite::driver($provider)->stateless()->user();
 
         $user = $this->findOrCreate($providerUser);
 
